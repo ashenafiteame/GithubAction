@@ -1,12 +1,12 @@
-#A workflow is a configurable automated process that will run one or more jobs. 
-#defined in the .github/workflows directory 
+#A workflow is a configurable automated process that will run one or more jobs.
+#defined in the .github/workflows directory
 name: workflow_one
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 #Events : An event is a specific activity in a repository that triggers a workflow run.
-on: 
+on:
   push
-  pull_request:
-    branches: [master]
+  # pull_request:
+  #   branches: [master]
 
 # Jobs : A job is a set of steps in a workflow that is executed on the same runner.
 jobs:
@@ -47,6 +47,6 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: "14"
       - run: npm install -g bats
       - run: bats -v
