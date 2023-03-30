@@ -6,7 +6,7 @@ run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: 
   push
   pull_request:
-    branches: [master, dev]
+    branches: [master]
 
 # Jobs : A job is a set of steps in a workflow that is executed on the same runner.
 jobs:
