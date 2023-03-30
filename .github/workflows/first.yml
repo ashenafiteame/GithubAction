@@ -1,0 +1,60 @@
+#A workflow is a configurable automated process that will run one or more jobs.
+#defined in the .github/workflows directory
+name: workflow_one
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+#Events : An event is a specific activity in a repository that triggers a workflow run.
+on:
+  push
+  # pull_request:
+  #   branches: [master]
+
+# Jobs : A job is a set of steps in a workflow that is executed on the same runner.
+jobs:
+  job1:
+    name: First job
+    runs-on: ubuntu-latest #A runner is a server that runs your workflows when they're triggered. Each runner can run a single job at a time
+    #Each step is either a shell script that will be executed, or an action that will be run.
+    steps:
+      - name: Step one
+        uses: actions/checkout@v2
+      - name: Step two
+        run: env | sort
+  job2:
+    name: Second job
+    runs-on: windows-latest
+    steps:
+      - name: Step one
+        uses: actions/checkout@v2
+      - name: Step two
+        run: "Get-ChildItem Env: | Sort-Object Name"
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+  check-bats-version and push to docker hub:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "14"
+      - run: npm install -g bats
+      - run: bats -v
+
+      - name: Build and Push Docker Image
+        uses: mr-smithers-excellent/docker-build-push@v4
+        with:
+          image: ashenafitm/nodejs_test
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
